@@ -16,6 +16,42 @@ var dataFormattata = anno + '-' + (mese < 10 ? '0' + mese : mese) + '-' + (giorn
         // Inserire la data nella pagina HTML
         document.body.innerHTML += '<p>Data corrente: ' + dataFormattata + '</p>';
 
+       
+        const acl = new Accelerometer({ frequency: 60 });
+
+        acl.addEventListener("reading", () => {
+          // Verifica se il telefono è in posizione orizzontale
+          if (isPhoneHorizontal(acl)) {
+            // Avvia la prima domanda
+            startQuestion();
+          }
+        });
+        
+        acl.start();
+        
+        // Funzione per verificare se il telefono è in posizione orizzontale
+        function isPhoneHorizontal(accelerometer) {
+          // Puoi personalizzare questi valori in base alla tua esperienza
+          const threshold = 1.5; // soglia per determinare l'orientamento orizzontale
+        
+          return Math.abs(accelerometer.y) < threshold && Math.abs(accelerometer.z) < threshold;
+        }
+        
+        // Funzione per iniziare la prima domanda
+        function startQuestion() {
+          // Verifica se ci sono ancora domande disponibili
+          if (questionIndex < questions.length) {
+            const question = questions[questionIndex];
+            questionContainer.innerHTML = '';
+            typeQuestion(question, questionContainer);
+            readQuestion(question);
+        
+            // Incrementa l'indice della domanda corrente
+            questionIndex++;
+          }
+        }
+
+
 
         
 
