@@ -135,8 +135,6 @@ clickToRecordButton.addEventListener('click', function () {
     
 
 
-
-
       // Salva risposta quando finisci di parlare.
 
       recognition.addEventListener('end', function () {
