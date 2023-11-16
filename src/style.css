@@ -33,25 +33,24 @@ body {
 }
 
 #sottotitolo {
-  font-size: 10px;
+  font-size: 12px;
   text-align: right;
   color: white;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-  font-weight: 600;
   margin-top: 0px;
 }
 
 
 #bottone {
   margin-left: 0%;
-  padding: 1%;
-  width: 25%;
-  height: 5%;
+  padding-top: 2%;
+  width: 30%;
+  height: 4%;
   margin-top: 25%;
   border-radius: 5px;
   background: #848484;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-  font-size: 10px;
+  font-size: 12px;
   border-width: 0px;
   background: rgba(217, 217, 217, 0.25);
   backdrop-filter: blur(25px);
@@ -107,14 +106,14 @@ body {
 
 button {
   margin-left: 0%;
-  padding: 1%;
-  width: 25%;
-  height: 5%;
+  padding-top: 2%;
+  width: 30%;
+  height: 4%;
   margin-top: 10%;
   border-radius: 5px;
   background: #848484;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-  font-size: 10px;
+  font-size: 12px;
   border-width: 0px;
   background: rgba(217, 217, 217, 0.25);
   backdrop-filter: blur(25px);
@@ -132,7 +131,7 @@ button {
 }
 
 p {
-  font-size: 10px;
+  font-size: 12px;
   text-align: right;
   color: white;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -143,7 +142,7 @@ p {
 }
 a {
   display: block;
-  font-size: 10px;
+  font-size: 12px;
   text-align: left;
   color: white;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
