@@ -17,6 +17,35 @@ var dataFormattata = anno + '-' + (mese < 10 ? '0' + mese : mese) + '-' + (giorn
 document.body.innerHTML += '<p>Data corrente: ' + dataFormattata + '</p>';
 
 window.addEventListener("deviceorientation", handleOrientation, true);
+
+let hasSensorPermission = !(DeviceOrientationEvent.requestPermission || DeviceMotionEvent.requestPermission);
+
+function begPermission(){
+  if (DeviceOrientationEvent.requestPermission){
+    DeviceOrientationEvent.requestPermission()
+    .then(response => {
+      if (response == 'granted') {
+        if (DeviceMotionEvent.requestPermission){
+          DeviceMotionEvent.requestPermission()
+          .then(response => {
+            if (response == 'granted') {
+              hasSensorPermission = true;
+            }
+          })
+          .catch(alert)
+        }
+      }
+    })
+    .catch(alert)
+  }
+}
+
+function touchEnded() {
+  if (!hasSensorPermission){
+    begPermission();
+  }
+}
+
 function handleOrientation(event) {
     const absolute = event.absolute;
     const alpha = event.alpha;
