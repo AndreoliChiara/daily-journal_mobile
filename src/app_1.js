@@ -21,42 +21,90 @@ var dataFormattata = anno + '-' + (mese < 10 ? '0' + mese : mese) + '-' + (giorn
 
 
 
-const elevenLabsApiKey = '12a57bdb2e2c1ba623fc969c9ca50631';
-const button = document.querySelector('button');
-const clickToRecordButton = document.getElementById('click_to_record');
-
-
-//Cliccando bottone appare e la domanda
-button.addEventListener("click", function () {
-    const questions = [
-        "What emotions did you feel today?",
-        "Did something happen that affected your day?",
-        "What did you do during the day?",
-        "What was the best part and the worst part of the day?",
-        // Aggiungi altre domande se necessario
-    ];
-
-    let questionIndex = 0;
-
-
-
-    //Velocità con cui appare la domanda 
-    function typeQuestion(question, element, index = 0) {
-        if (index < question.length) {
-            element.innerHTML += question.charAt(index);
-            index++;
-            setTimeout(() => typeQuestion(question, element, index), 120);
-        } 
-    }
-
-    const question = questions[questionIndex];
-    const questionContainer = document.getElementById('question-container');
-
-    questionContainer.innerHTML = '';
-    typeQuestion(question, questionContainer);
-    speak(question);
-
-});
+        const elevenLabsApiKey = '12a57bdb2e2c1ba623fc969c9ca50631';
+        const button = document.querySelector('button');
+        const clickToRecordButton = document.getElementById('click_to_record');
+        const questionContainer = document.getElementById('question-container');
+        
+        const questions = [
+            "What emotions did you feel today?",
+            "Did something happen that affected your day?",
+            "What did you do during the day?",
+            "What was the best part and the worst part of the day?",
+            // Aggiungi altre domande se necessario
+        ];
+        
+        let questionIndex = 0;
+        
+        //Velocità con cui appare la domanda 
+        function typeQuestion(question, element, index = 0) {
+            if (index < question.length) {
+                element.innerHTML += question.charAt(index);
+                index++;
+                setTimeout(() => typeQuestion(question, element, index), 70);
+            } 
+        }
+        
+        // Funzione per leggere una domanda
+        async function readQuestion(question) {
+            const text = question;
+            const voiceId = "I5ANhMcPbMpJJNCGKeAx";
+        
+            const headers = new Headers();
+            headers.append("Accept", "audio/mpeg");
+            headers.append("xi-api-key", elevenLabsApiKey);
+            headers.append("Content-Type", "application/json");
+        
+            const body = JSON.stringify({
+                text: text,
+                model_id: "eleven_monolingual_v1",
+                voice_settings: {
+                    stability: 0.5,
+                    similarity_boost: 0.5,
+                },
+            });
+        
+            try {
+                const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/stream`, {
+                    method: "POST",
+                    headers: headers,
+                    body: body,
+                });
+        
+                if (!response.ok) {
+                    console.error(`Error: ${response.status} - ${response.statusText}`);
+                    const responseText = await response.text();
+                    console.error("Response Text:", responseText);
+                    throw new Error("Text to Speech API request failed");
+                }
+        
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const audio = new Audio(url);
+                audio.play();
+                audio.onended = () => {
+                    // Gestisci la fine se necessario
+                    clickToRecordButton.click();
+                };
+            } catch (error) {
+                console.error("Error in ElevenLabs TTS API request:", error.message);
+            }
+        }
+        
+        // Cliccando il pulsante appare la domanda
+        button.addEventListener("click", function () {
+            // Verifica se ci sono ancora domande disponibili
+            if (questionIndex < questions.length) {
+                const question = questions[questionIndex];
+                questionContainer.innerHTML = '';
+                typeQuestion(question, questionContainer);
+                readQuestion(question);
+        
+                // Incrementa l'indice della domanda corrente
+                questionIndex++;
+            }
+        });
+        
 
 
 
@@ -165,49 +213,6 @@ clickToRecordButton.addEventListener('click', function () {
     }
 
 
-// const answers = [];
-
-// function saveAnswer() {
-//     const answer = document.getElementById("convert_text").value;
-//     answers.push(answer);
-//     document.getElementById("convert_text").value = ""; // Pulisce il campo di input
-//     displayAnswers();
-// }
-
-// // Funzione per visualizzare le risposte salvate
-// function displayAnswers() {
-//     const answerContainer = document.getElementById("answer-container");
-//     answerContainer.innerHTML = "<h3>Answers:</h3>";
-//     answers.forEach((answer, index) => {
-//         answerContainer.innerHTML += `<p>${index + 1}. ${answer}</p>`;
-//     });
-// }
-
-
-
-
-
-
-// if (window.DeviceMotionEvent) {
-//     window.addEventListener('devicemotion', function(event) {
-//         // Accelerazione lungo l'asse X
-//         var accelerationX = event.acceleration.x;
-
-//         // Accelerazione lungo l'asse Y
-//         var accelerationY = event.acceleration.y;
-
-//         // Accelerazione lungo l'asse Z
-//         var accelerationZ = event.acceleration.z;
-
-//         // Aggiorna i valori sulla pagina HTML
-//         document.getElementById('acceleration-x').textContent = 'Acceleration X: ' + accelerationX;
-//         document.getElementById('acceleration-y').textContent = 'Acceleration Y: ' + accelerationY;
-//         document.getElementById('acceleration-z').textContent = 'Acceleration Z: ' + accelerationZ;
-//     });
-// } else {
-//     // Il dispositivo non supporta l'accelerometro o l'API DeviceMotion
-//     alert("Il tuo dispositivo non supporta l'accelerometro o l'API DeviceMotion.");
-// }
 
 
 
