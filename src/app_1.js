@@ -30,6 +30,7 @@ const clickToRecordButton = document.getElementById('click_to_record');
 button.addEventListener("click", function () {
     const questions = [
         "What emotions did you feel today?",
+        "Did something happen that affected your day?",
         // Aggiungi altre domande se necessario
     ];
 
