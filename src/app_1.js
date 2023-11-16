@@ -17,6 +17,34 @@ var dataFormattata = anno + '-' + (mese < 10 ? '0' + mese : mese) + '-' + (giorn
         document.body.innerHTML += '<p>Data corrente: ' + dataFormattata + '</p>';
 
 
+        // Aggiungi questo codice per gestire l'accelerometro
+    if (window.DeviceMotionEvent) {
+            window.addEventListener('devicemotion', handleMotion);
+    } else {
+             console.error('L\'accelerometro non è supportato su questo dispositivo.');
+    }
+
+    function handleMotion(event) {
+        const acceleration = event.accelerationIncludingGravity;
+        const threshold = 9.5; // Puoi regolare questo valore in base alle tue esigenze
+
+        // Verifica se il telefono è in posizione orizzontale
+        if (acceleration.z > threshold) {
+        // Avvia la domanda solo se ci sono ancora domande disponibili
+            if (questionIndex < questions.length) {
+                const question = questions[questionIndex];
+                questionContainer.innerHTML = '';
+                typeQuestion(question, questionContainer);
+                readQuestion(question);
+
+                // Incrementa l'indice della domanda corrente
+                questionIndex++;
+        }
+    }
+}
+
+
+
 
         //Domande
         const elevenLabsApiKey = '12a57bdb2e2c1ba623fc969c9ca50631';
