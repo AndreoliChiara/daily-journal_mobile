@@ -17,6 +17,17 @@ var dataFormattata = anno + '-' + (mese < 10 ? '0' + mese : mese) + '-' + (giorn
         document.body.innerHTML += '<p>Data corrente: ' + dataFormattata + '</p>';
 
        
+        
+        if (typeof DeviceMotionEvent.requestPermission === 'function') {
+            DeviceMotionEvent.requestPermission()
+              .then(permissionState => {
+                if (permissionState === 'granted') {
+                  // L'autorizzazione è stata concessa, puoi iniziare a usare l'accelerometro.
+                }
+              })
+              .catch(console.error);
+          }
+
         const acl = new Accelerometer({ frequency: 60 });
 
         acl.addEventListener("reading", () => {
@@ -53,7 +64,7 @@ var dataFormattata = anno + '-' + (mese < 10 ? '0' + mese : mese) + '-' + (giorn
 
 
 
-        
+
 
         //Domande
         const elevenLabsApiKey = '12a57bdb2e2c1ba623fc969c9ca50631';
