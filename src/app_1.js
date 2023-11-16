@@ -1,3 +1,5 @@
+//Data corrente
+
 
 var dataCorrente = new Date();
 // Ottenere i componenti della data (giorno, mese, anno)
@@ -16,11 +18,7 @@ var dataFormattata = anno + '-' + (mese < 10 ? '0' + mese : mese) + '-' + (giorn
 
 
 
-
-
-
-
-
+        //Domande
         const elevenLabsApiKey = '12a57bdb2e2c1ba623fc969c9ca50631';
         const button = document.querySelector('button');
         const clickToRecordButton = document.getElementById('click_to_record');
@@ -45,7 +43,7 @@ var dataFormattata = anno + '-' + (mese < 10 ? '0' + mese : mese) + '-' + (giorn
             } 
         }
         
-        // Funzione per leggere una domanda
+        // Funzione per leggere una domanda dall'AI
         async function readQuestion(question) {
             const text = question;
             const voiceId = "I5ANhMcPbMpJJNCGKeAx";
@@ -55,20 +53,20 @@ var dataFormattata = anno + '-' + (mese < 10 ? '0' + mese : mese) + '-' + (giorn
             headers.append("xi-api-key", elevenLabsApiKey);
             headers.append("Content-Type", "application/json");
         
-            const body = JSON.stringify({
-                text: text,
-                model_id: "eleven_monolingual_v1",
-                voice_settings: {
-                    stability: 0.5,
-                    similarity_boost: 0.5,
+        const body = JSON.stringify({
+            text: text,
+            model_id: "eleven_monolingual_v1",
+            voice_settings: {
+                stability: 0.5,
+                similarity_boost: 0.5,
                 },
             });
         
-            try {
-                const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/stream`, {
-                    method: "POST",
-                    headers: headers,
-                    body: body,
+        try {
+            const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/stream`, {
+                method: "POST",
+                headers: headers,
+                body: body,
                 });
         
                 if (!response.ok) {
@@ -78,13 +76,13 @@ var dataFormattata = anno + '-' + (mese < 10 ? '0' + mese : mese) + '-' + (giorn
                     throw new Error("Text to Speech API request failed");
                 }
         
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                const audio = new Audio(url);
-                audio.play();
-                audio.onended = () => {
-                    // Gestisci la fine se necessario
-                    clickToRecordButton.click();
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const audio = new Audio(url);
+            audio.play();
+            audio.onended = () => {
+            // Gestisci la fine se necessario
+            clickToRecordButton.click();
                 };
             } catch (error) {
                 console.error("Error in ElevenLabs TTS API request:", error.message);
@@ -109,67 +107,16 @@ var dataFormattata = anno + '-' + (mese < 10 ? '0' + mese : mese) + '-' + (giorn
 
 
 
-//Voce che legge la domanda
+//Trasforma la voce in testo
 
-async function speak(question) {
-    const text = question;
-    const voiceId = "I5ANhMcPbMpJJNCGKeAx";
-
-    const headers = new Headers();
-    headers.append("Accept", "audio/mpeg");
-    headers.append("xi-api-key", "12a57bdb2e2c1ba623fc969c9ca50631");
-    headers.append("Content-Type", "application/json");
-
-    const body = JSON.stringify({
-        text: text,
-        model_id: "eleven_monolingual_v1",
-        voice_settings: {
-            stability: 0.5,
-            similarity_boost: 0.5,
-        },
-    });
-
-    
-
-    try {
-        const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/stream`, {
-            method: "POST",
-            headers: headers,
-            body: body,
-        });
-
-        if (!response.ok) {
-            console.error(`Error: ${response.status} - ${response.statusText}`);
-            const responseText = await response.text();
-            console.error("Response Text:", responseText);
-            throw new Error("Text to Speech API request failed");
-        }
-
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const audio = new Audio(url);
-        audio.play();
-        audio.onended = () => {
-            // Gestisci la fine se necessario
-            clickToRecordButton.click();
-        };
-    } catch (error) {
-        console.error("Error in ElevenLabs TTS API request:", error.message);
-    }
-}
-
-
-
-
-//Speech to texts
-
-clickToRecordButton.addEventListener('click', function () {
+    clickToRecordButton.addEventListener('click', function () {
     const speech = true;
     window.SpeechRecognition = window.webkitSpeechRecognition;
 
     const recognition = new SpeechRecognition();
     recognition.interimResults = true;
 
+    
     recognition.addEventListener('result', e => {
         const transcript = Array.from(e.results)
           .map(result => result[0])
@@ -188,7 +135,7 @@ clickToRecordButton.addEventListener('click', function () {
 
       // Salva risposta quando finisci di parlare.
 
-      recognition.addEventListener('end', function () {
+    recognition.addEventListener('end', function () {
         // Chiamata alla funzione per salvare la risposta solo quando l'utente ha finito di parlare
         salvaRisposta();
       });
