@@ -31,6 +31,8 @@ button.addEventListener("click", function () {
     const questions = [
         "What emotions did you feel today?",
         "Did something happen that affected your day?",
+        "What did you do during the day?",
+        "What was the best part and the worst part of the day?",
         // Aggiungi altre domande se necessario
     ];
 
