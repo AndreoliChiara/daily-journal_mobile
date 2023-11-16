@@ -16,54 +16,6 @@ var dataFormattata = anno + '-' + (mese < 10 ? '0' + mese : mese) + '-' + (giorn
         // Inserire la data nella pagina HTML
         document.body.innerHTML += '<p>Data corrente: ' + dataFormattata + '</p>';
 
-       
-        
-        if (typeof DeviceMotionEvent.requestPermission === 'function') {
-            DeviceMotionEvent.requestPermission()
-              .then(permissionState => {
-                if (permissionState === 'granted') {
-                  // L'autorizzazione è stata concessa, puoi iniziare a usare l'accelerometro.
-                }
-              })
-              .catch(console.error);
-          }
-
-        const acl = new Accelerometer({ frequency: 60 });
-
-        acl.addEventListener("reading", () => {
-          // Verifica se il telefono è in posizione orizzontale
-          if (isPhoneHorizontal(acl)) {
-            // Avvia la prima domanda
-            startQuestion();
-          }
-        });
-        
-        acl.start();
-        
-        // Funzione per verificare se il telefono è in posizione orizzontale
-        function isPhoneHorizontal(accelerometer) {
-          // Puoi personalizzare questi valori in base alla tua esperienza
-          const threshold = 1.5; // soglia per determinare l'orientamento orizzontale
-        
-          return Math.abs(accelerometer.y) < threshold && Math.abs(accelerometer.z) < threshold;
-        }
-        
-        // Funzione per iniziare la prima domanda
-        function startQuestion() {
-          // Verifica se ci sono ancora domande disponibili
-          if (questionIndex < questions.length) {
-            const question = questions[questionIndex];
-            questionContainer.innerHTML = '';
-            typeQuestion(question, questionContainer);
-            readQuestion(question);
-        
-            // Incrementa l'indice della domanda corrente
-            questionIndex++;
-          }
-        }
-
-
-
 
 
         //Domande
@@ -129,7 +81,7 @@ var dataFormattata = anno + '-' + (mese < 10 ? '0' + mese : mese) + '-' + (giorn
             const audio = new Audio(url);
             audio.play();
             audio.onended = () => {
-            // Gestisci la fine se necessario
+                    // Gestisci la fine se necessario
             clickToRecordButton.click();
                 };
             } catch (error) {
@@ -157,14 +109,13 @@ var dataFormattata = anno + '-' + (mese < 10 ? '0' + mese : mese) + '-' + (giorn
 
 //Trasforma la voce in testo
 
-    clickToRecordButton.addEventListener('click', function () {
+clickToRecordButton.addEventListener('click', function () {
     const speech = true;
     window.SpeechRecognition = window.webkitSpeechRecognition;
 
     const recognition = new SpeechRecognition();
     recognition.interimResults = true;
 
-    
     recognition.addEventListener('result', e => {
         const transcript = Array.from(e.results)
           .map(result => result[0])
@@ -183,7 +134,7 @@ var dataFormattata = anno + '-' + (mese < 10 ? '0' + mese : mese) + '-' + (giorn
 
       // Salva risposta quando finisci di parlare.
 
-    recognition.addEventListener('end', function () {
+      recognition.addEventListener('end', function () {
         // Chiamata alla funzione per salvare la risposta solo quando l'utente ha finito di parlare
         salvaRisposta();
       });
