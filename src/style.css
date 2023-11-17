@@ -20,6 +20,11 @@ body {
 
 }
 
+#convert_text {
+  text-align: left;
+  width: 100%;
+}
+
 #titolo {
   height: auto;
   font-size: 25px;

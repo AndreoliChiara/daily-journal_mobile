@@ -1,4 +1,42 @@
+// let demo_button = document.getElementById("start_demo");
+// alert("load");
+// demo_button.addEventListener("click", () => {
+//     alert("test");
+    
+
+//     e.preventDefault();
+
+//     // Request permission for iOS 13+ devices
+//     if (
+//         DeviceMotionEvent &&
+//         typeof DeviceMotionEvent.requestPermission === "function"
+//     ) {
+//         DeviceMotionEvent.requestPermission();
+//     }
+
+//     if (is_running) {
+//         window.removeEventListener("devicemotion", handleMotion);
+//         window.removeEventListener("deviceorientation", handleOrientation);
+//         demo_button.innerHTML = "Start demo";
+//         demo_button.classList.add('btn-success');
+//         demo_button.classList.remove('btn-danger');
+//         is_running = false;
+//     } else {
+//         window.addEventListener("devicemotion", handleMotion);
+//         window.addEventListener("deviceorientation", handleOrientation);
+//         document.getElementById("start_demo").innerHTML = "Stop demo";
+//         demo_button.classList.remove('btn-success');
+//         demo_button.classList.add('btn-danger');
+//         is_running = true;
+//     }
+// })
+
+
+
+
 //Data corrente
+
+
 
 
 var dataCorrente = new Date();
@@ -16,44 +54,6 @@ var dataFormattata = anno + '-' + (mese < 10 ? '0' + mese : mese) + '-' + (giorn
 // Inserire la data nella pagina HTML
 document.body.innerHTML += '<p>Data corrente: ' + dataFormattata + '</p>';
 
-window.addEventListener("deviceorientation", handleOrientation, true);
-
-let hasSensorPermission = !(DeviceOrientationEvent.requestPermission || DeviceMotionEvent.requestPermission);
-
-function begPermission(){
-  if (DeviceOrientationEvent.requestPermission){
-    DeviceOrientationEvent.requestPermission()
-    .then(response => {
-      if (response == 'granted') {
-        if (DeviceMotionEvent.requestPermission){
-          DeviceMotionEvent.requestPermission()
-          .then(response => {
-            if (response == 'granted') {
-              hasSensorPermission = true;
-            }
-          })
-          .catch(alert)
-        }
-      }
-    })
-    .catch(alert)
-  }
-}
-
-function touchEnded() {
-  if (!hasSensorPermission){
-    begPermission();
-  }
-}
-
-function handleOrientation(event) {
-    const absolute = event.absolute;
-    const alpha = event.alpha;
-    const beta = event.beta;
-    const gamma = event.gamma;
-    document.querySelector("#beta").innerHTML = beta;
-    // Do stuff with the new orientation data
-}
 
 //Domande
 const elevenLabsApiKey = '12a57bdb2e2c1ba623fc969c9ca50631';
@@ -159,7 +159,7 @@ clickToRecordButton.addEventListener('click', function () {
             .map(result => result.transcript)
             .join('');
 
-        document.getElementById("convert_text").value = transcript;
+        document.getElementById("convert_text").textContent = transcript;
 
         // Aggiorna la variabile della risposta corrente
         rispostaCorrente = transcript;
