@@ -56,7 +56,7 @@ document.body.innerHTML += '<p>Data corrente: ' + dataFormattata + '</p>';
 
 
 //Domande
-const elevenLabsApiKey = '12a57bdb2e2c1ba623fc969c9ca50631';
+const elevenLabsApiKey = 'f05007478586d930a7e266783cbccab7';
 const button = document.querySelector('button');
 const clickToRecordButton = document.getElementById('click_to_record');
 const questionContainer = document.getElementById('question-container');
@@ -83,7 +83,7 @@ function typeQuestion(question, element, index = 0) {
 // Funzione per leggere una domanda dall'AI
 async function readQuestion(question) {
     const text = question;
-    const voiceId = "I5ANhMcPbMpJJNCGKeAx";
+    const voiceId = "EJwcS5Ua6M9dACpe0LbW";
 
     const headers = new Headers();
     headers.append("Accept", "audio/mpeg");
@@ -137,10 +137,24 @@ button.addEventListener("click", function () {
 
         // Incrementa l'indice della domanda corrente
         questionIndex++;
+         // Verifica se è l'ultima domanda e aggiorna il testo del pulsante
+         if (questionIndex === questions.length) {
+            button.textContent = "Finish";
+        }
+    }else {
+        // Se hai risposto all'ultima domanda, mostra il messaggio finale
+        const finalMessage = "Okay, I archived your replies. Thank you and good night";
+        questionContainer.innerHTML = '';
+        typeQuestion(finalMessage, questionContainer);
+        readQuestion(finalMessage);
+
+        // Resetta l'indice delle domande per ricominciare da capo
+        questionIndex = 0;
+
+        // Cambia il testo del pulsante per la prossima sessione
+        button.textContent = "Read Question";
     }
 });
-
-
 
 
 
